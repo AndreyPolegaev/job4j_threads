@@ -11,7 +11,7 @@ public class ConsoleProgress implements Runnable {
                     System.out.print("\r Loading..." + symbols[i]);
                 }
             } catch (InterruptedException e) {
-                System.out.println(e.getMessage() + "в ConsoleProgress");
+                Thread.currentThread().interrupt();
             }
         }
     }
