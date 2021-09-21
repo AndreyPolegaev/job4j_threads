@@ -6,9 +6,9 @@ public class ConsoleProgress implements Runnable {
         String[] symbols = new String[]{"\\", "|", "/" };
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                for (int i = 0; i < 3; i++) {
+                for (var temp : symbols) {
                     Thread.sleep(500);
-                    System.out.print("\r Loading..." + symbols[i]);
+                    System.out.print("\r Loading..." + temp);
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
