@@ -13,7 +13,7 @@ public class User {
         this.amount = amount;
     }
 
-    public int getId() {
+    public  int getId() {
         return id;
     }
 
@@ -21,11 +21,11 @@ public class User {
         this.id = id;
     }
 
-    public int getAmount() {
+    public  int getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public  void setAmount(int amount) {
         this.amount = amount;
     }
 

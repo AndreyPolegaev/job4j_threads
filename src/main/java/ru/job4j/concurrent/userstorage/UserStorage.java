@@ -2,53 +2,49 @@ package ru.job4j.concurrent.userstorage;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Класс описывает потокобезопасное хранилище.
- * @Author Andrey Polegaev
+ *
  * @version 1.0
+ * @Author Andrey Polegaev
  */
 
 @ThreadSafe
 public class UserStorage implements Storage {
 
     @GuardedBy("this")
-    private final List<User> users = new ArrayList<>();
+    private final Map<Integer, User> users = new HashMap<>();
 
     @Override
     public synchronized boolean add(User user) {
-        if (!users.contains(user)) {
-            users.add(user);
-            return true;
-        }
-        return false;
+        return users.putIfAbsent(user.getId(), user) != user;
     }
 
     @Override
     public synchronized boolean update(User user) {
-        User find = findById(user.getId());
-        if (find != null) {
-            users.set(users.indexOf(user), user);
+        User u = users.get(user.getId());
+        if (u != null) {
+            u.setAmount(user.getAmount());
+            users.put(user.getId(), u);
             return true;
-
         }
         return false;
     }
 
     @Override
     public synchronized boolean delete(User user) {
-       return users.remove(user);
+        return users.remove(user.getId()) != null;
     }
 
     public synchronized User findById(int id) {
-        for (var temp : users) {
-            if (temp.getId() == id) {
-                return temp;
-            }
-        }
-        return null;
+        User u = users.get(id);
+       if (u != null) {
+           return u;
+       }
+       return null;
     }
 
     @Override
