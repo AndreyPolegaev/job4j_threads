@@ -9,8 +9,6 @@ public class Wget implements Runnable {
     private final String url;
     private final int speed;
     private final String fileName;
-    long delay = 0;
-
 
     public Wget(String url, int speed, String fileName) {
         this.url = url;
@@ -20,21 +18,22 @@ public class Wget implements Runnable {
 
     @Override
     public void run() {
+        long delay = 0;
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
             byte[] dataBuffer = new byte[1024];
-            Long start = System.currentTimeMillis();
+            Long start = System.currentTimeMillis() / 1000;
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                Long finish = System.currentTimeMillis();
-                if ((finish - start) < speed) {
-                    this.delay++;
-                    run();
-                }
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 fileOutputStream.flush();
                 try {
                     Thread.sleep(delay);
+                    Long finish = System.currentTimeMillis() / 1000;
+                    Long rslTime = finish - start;
+                    if ((rslTime) < speed) {
+                        delay += 2000;
+                    }
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     e.printStackTrace();
@@ -46,6 +45,7 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        Long start1 = System.currentTimeMillis() / 1000;
         String url;
         int speed;
         String fileName;
@@ -59,5 +59,7 @@ public class Wget implements Runnable {
         Thread wget = new Thread(new Wget(url, speed, fileName));
         wget.start();
         wget.join();
+        Long finish1 = System.currentTimeMillis() / 1000;
+        System.out.println("программа работала секунд: " + (finish1 - start1));
     }
 }
