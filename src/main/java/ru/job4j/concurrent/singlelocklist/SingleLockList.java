@@ -7,19 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 
 @ThreadSafe
-public class SingleLockList<T> implements Iterable<T>, Cloneable {
+public class SingleLockList<T> implements Iterable<T> {
 
     @GuardedBy("this")
-    private List<T> list;
+    private final List<T> list;
 
-    public SingleLockList(List<T> list) throws CloneNotSupportedException {
-        this.list = (List<T>) clone();
-    }
-
-    @Override
-    public synchronized Object clone() throws CloneNotSupportedException {
-        this.list = (List<T>) super.clone();
-        return list;
+    public SingleLockList(List<T> list) {
+        this.list = copy(list);
     }
 
     public synchronized void add(T value) {

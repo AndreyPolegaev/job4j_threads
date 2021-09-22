@@ -1,8 +1,6 @@
 package ru.job4j.concurrent.singlelocklist;
 
 import static org.junit.Assert.*;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Set;
@@ -11,9 +9,8 @@ import static org.hamcrest.core.Is.is;
 
 public class SingleLockListTest {
 
-    @Ignore
     @Test
-    public void add() throws InterruptedException, CloneNotSupportedException {
+    public void add() throws InterruptedException {
         SingleLockList<Integer> list = new SingleLockList<>(new ArrayList<>());
         Thread first = new Thread(() -> list.add(1));
         Thread second = new Thread(() -> list.add(2));
