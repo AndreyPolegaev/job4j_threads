@@ -28,12 +28,12 @@ public class Wget implements Runnable {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 fileOutputStream.flush();
                 try {
-                    Thread.sleep(delay);
                     Long finish = System.currentTimeMillis() / 1000;
                     Long rslTime = finish - start;
                     if ((rslTime) < speed) {
                         delay += 2000;
                     }
+                    Thread.sleep(delay);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     e.printStackTrace();
