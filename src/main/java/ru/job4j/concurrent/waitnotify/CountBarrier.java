@@ -29,9 +29,7 @@ public class CountBarrier {
      */
     public void count() {
         synchronized (monitor) {
-            if (count < total) {
                 count++;
-            }
             monitor.notifyAll();
         }
     }
