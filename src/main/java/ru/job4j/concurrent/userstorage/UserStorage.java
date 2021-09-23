@@ -3,6 +3,7 @@ package ru.job4j.concurrent.userstorage;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -16,35 +17,49 @@ import java.util.Map;
 public class UserStorage implements Storage {
 
     @GuardedBy("this")
-    private final Map<Integer, User> users = new HashMap<>();
+    private final Map<Integer, User> users;
+
+    public UserStorage(Map<Integer, User> users) {
+        this.users = copy(users);
+    }
+
+    private synchronized Map<Integer, User> copy(Map<Integer, User> users) {
+        return new HashMap<>(users);
+    }
 
     @Override
     public synchronized boolean add(User user) {
-        return users.putIfAbsent(user.getId(), user) != user;
+        int size = users.size();
+        users.putIfAbsent(user.getId(), user);
+        return size != users.size();
     }
 
+    /**
+     * если ок- вернет старое значение
+     * в противном слаче null
+     */
     @Override
     public synchronized boolean update(User user) {
-        User u = users.get(user.getId());
-        if (u != null) {
-            u.setAmount(user.getAmount());
-            users.put(user.getId(), u);
-            return true;
-        }
+      if (users.containsKey(user.getId())) {
+          users.put(user.getId(), user);
+          return true;
+      }
         return false;
     }
 
+    /**
+     * если ок- вернет старое значение
+     * в противном слаче null
+     */
     @Override
     public synchronized boolean delete(User user) {
-        return users.remove(user.getId()) != null;
+        int size = users.size();
+        users.remove(user.getId());
+        return size != users.size();
     }
 
     public synchronized User findById(int id) {
-        User u = users.get(id);
-       if (u != null) {
-           return u;
-       }
-       return null;
+        return users.get(id);
     }
 
     @Override
@@ -52,6 +67,9 @@ public class UserStorage implements Storage {
         User from = findById(fromId);
         User to = findById(toId);
         if (from != null && to != null) {
+            if (from.getAmount() < amount) {
+                throw new IllegalArgumentException("недостаточно средств");
+            }
             from.setAmount(from.getAmount() - amount);
             to.setAmount((to.getAmount() + amount));
         }

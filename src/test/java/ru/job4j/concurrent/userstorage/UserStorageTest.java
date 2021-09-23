@@ -1,6 +1,9 @@
 package ru.job4j.concurrent.userstorage;
 
 import org.junit.Test;
+
+import java.util.HashMap;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -24,7 +27,7 @@ public class UserStorageTest {
 
     @Test
     public void whenTwoThreads() throws InterruptedException {
-        UserStorage userStorage = new UserStorage();
+        UserStorage userStorage = new UserStorage(new HashMap<>());
         ThreadStorage first = new ThreadStorage(userStorage);
         ThreadStorage second = new ThreadStorage(userStorage);
         first.start();
@@ -36,8 +39,45 @@ public class UserStorageTest {
     }
 
     @Test
+    public void whenAdd() throws InterruptedException {
+        UserStorage userStorage = new UserStorage(new HashMap<>());
+        assertTrue(userStorage.add(new User(1, 500)));
+        assertFalse(userStorage.add(new User(1, 500)));
+        assertTrue(userStorage.add(new User(2, 700)));
+        assertThat(userStorage.findById(1), is(new User(1, 500)));
+        assertThat(userStorage.findById(2), is(new User(2, 700)));
+    }
+
+    @Test
+    public void whenUpdate() throws InterruptedException {
+        UserStorage userStorage = new UserStorage(new HashMap<>());
+        userStorage.add(new User(1, 500));
+        userStorage.add(new User(2, 700));
+        userStorage.update(new User(1, 600));
+        assertThat(userStorage.findById(1), is(new User(1, 600)));
+        assertThat(userStorage.findById(2), is(new User(2, 700)));
+    }
+
+    @Test
+    public void whenDelete1() throws InterruptedException {
+        UserStorage userStorage = new UserStorage(new HashMap<>());
+        userStorage.add(new User(1, 500));
+        userStorage.add(new User(2, 700));
+        assertTrue(userStorage.delete(new User(2, 500)));
+        assertFalse(userStorage.delete(new User(2, 500)));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenLowAmount() throws InterruptedException {
+        UserStorage userStorage = new UserStorage(new HashMap<>());
+        userStorage.add(new User(1, 500));
+        userStorage.add(new User(2, 700));
+        userStorage.transfer(1, 2, 600);
+    }
+
+    @Test
     public void whenThreeThreads() throws InterruptedException {
-        UserStorage userStorage = new UserStorage();
+        UserStorage userStorage = new UserStorage(new HashMap<>());
 
         Thread first = new Thread(
                 () -> userStorage.add(new User(1, 500)));
@@ -63,7 +103,7 @@ public class UserStorageTest {
 
     @Test
     public void whenDelete() throws InterruptedException {
-        UserStorage userStorage = new UserStorage();
+        UserStorage userStorage = new UserStorage(new HashMap<>());
 
         Thread first = new Thread(
                 () -> userStorage.add(new User(1, 500)));
