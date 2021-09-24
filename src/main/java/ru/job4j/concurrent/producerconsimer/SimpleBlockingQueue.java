@@ -17,15 +17,11 @@ public class SimpleBlockingQueue<T> extends Thread {
         this.limit = limit;
     }
 
-    public void offer(T value) {
+    public void offer(T value) throws InterruptedException {
         synchronized (this) {
             while (queue.size() == limit) {
-                try {
                     System.out.println(Thread.currentThread().getName() + " ждет");
                     this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
             }
             queue.offer(value);
             System.out.println(value + " размер очереди = " + queue.size());
@@ -42,11 +38,6 @@ public class SimpleBlockingQueue<T> extends Thread {
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
             }
             System.out.println("элемент снят, размер очереди = " + queue.size());
             return queue.poll();

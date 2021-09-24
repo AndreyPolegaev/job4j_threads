@@ -1,9 +1,9 @@
 package ru.job4j.concurrent.producerconsimer;
 
 import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.IntStream;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -14,9 +14,13 @@ public class SimpleBlockingQueueTest2 {
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(10);
         Thread producer = new Thread(
                 () -> {
-                    IntStream.range(0, 7).forEach(
-                            queue::offer
-                    );
+                    for (int i = 0; i < 7; i++) {
+                        try {
+                            queue.offer(i);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
         );
         Thread consumer = new Thread(

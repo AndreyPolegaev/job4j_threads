@@ -11,8 +11,9 @@ public class ParallelSearch {
                         try {
                             System.out.println(queue.poll());
                         } catch (Exception e) {
-                            e.printStackTrace();
                             Thread.currentThread().interrupt();
+                            e.printStackTrace();
+
                         }
                     }
                 }
@@ -21,9 +22,8 @@ public class ParallelSearch {
         new Thread(
                 () -> {
                     for (int index = 0; index != 3; index++) {
-                        queue.offer(index);
                         try {
-                            Thread.sleep(500);
+                            queue.offer(index);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
