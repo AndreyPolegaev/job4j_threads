@@ -32,6 +32,7 @@ public class Wget implements Runnable {
                     Long rslTime = finish - start;
                     if ((rslTime) < speed) {
                         delay += 2000;
+                        start = System.currentTimeMillis() / 1000;
                     }
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
