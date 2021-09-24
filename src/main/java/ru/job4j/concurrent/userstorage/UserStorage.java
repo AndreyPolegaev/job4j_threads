@@ -29,33 +29,17 @@ public class UserStorage implements Storage {
 
     @Override
     public synchronized boolean add(User user) {
-        int size = users.size();
-        users.putIfAbsent(user.getId(), user);
-        return size != users.size();
+       return users.putIfAbsent(user.getId(), user) == null;
     }
 
-    /**
-     * если ок- вернет старое значение
-     * в противном слаче null
-     */
     @Override
     public synchronized boolean update(User user) {
-      if (users.containsKey(user.getId())) {
-          users.put(user.getId(), user);
-          return true;
-      }
-        return false;
+      return users.replace(user.getId(), user) != null;
     }
 
-    /**
-     * если ок- вернет старое значение
-     * в противном слаче null
-     */
     @Override
     public synchronized boolean delete(User user) {
-        int size = users.size();
-        users.remove(user.getId());
-        return size != users.size();
+       return users.remove(user.getId(), user);
     }
 
     public synchronized User findById(int id) {
@@ -64,8 +48,8 @@ public class UserStorage implements Storage {
 
     @Override
     public synchronized void transfer(int fromId, int toId, int amount) {
-        User from = findById(fromId);
-        User to = findById(toId);
+        User from = users.get(fromId);
+        User to = users.get(toId);
         if (from != null && to != null) {
             if (from.getAmount() < amount) {
                 throw new IllegalArgumentException("недостаточно средств");

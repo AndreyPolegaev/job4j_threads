@@ -1,9 +1,7 @@
 package ru.job4j.concurrent.userstorage;
 
 import org.junit.Test;
-
 import java.util.HashMap;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -63,8 +61,8 @@ public class UserStorageTest {
         UserStorage userStorage = new UserStorage(new HashMap<>());
         userStorage.add(new User(1, 500));
         userStorage.add(new User(2, 700));
-        assertTrue(userStorage.delete(new User(2, 500)));
         assertFalse(userStorage.delete(new User(2, 500)));
+        assertTrue(userStorage.delete(new User(1, 500)));
     }
 
     @Test(expected = IllegalArgumentException.class)
