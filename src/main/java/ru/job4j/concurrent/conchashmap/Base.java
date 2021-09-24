@@ -37,7 +37,6 @@ public class Base {
     }
 
     public void setName(String name) {
-        version++;
         this.name = name;
     }
 

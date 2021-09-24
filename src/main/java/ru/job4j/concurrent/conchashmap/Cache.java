@@ -11,20 +11,22 @@ public class Cache {
     }
 
     public boolean update(Base model) {
-        memory.computeIfPresent(model.getId(), (K, V) -> {
-            Base stored = memory.get(model.getId());
-            if (stored.getVersion() != model.getVersion()) {
+        memory.computeIfPresent(model.getId(), (k, v) -> {
+            if (v.getVersion() != model.getVersion()) {
                 throw new OptimisticException("Разные версии");
             }
-
-            V.setVersion();
-            V.setName(model.getName());
-            return V;
+            v.setVersion();
+            v.setName(model.getName());
+            return v;
         });
-        return true;
+        return memory.containsKey(model.getId());
     }
 
     public void delete(Base model) {
         memory.remove(model.getId());
+    }
+
+    public Base getBase(int index) {
+        return memory.get(index);
     }
 }
