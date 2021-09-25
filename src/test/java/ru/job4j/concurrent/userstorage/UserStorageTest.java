@@ -91,9 +91,9 @@ public class UserStorageTest {
 
         first.start();
         second.start();
-        third.start();
         first.join();
         second.join();
+        third.start();
         third.join();
         assertThat(userStorage.findById(1).getAmount(), is(1300));
         assertThat(userStorage.findById(2).getAmount(), is(0));
@@ -113,10 +113,10 @@ public class UserStorageTest {
                 () -> userStorage.delete(new User(2, 300)));
 
         first.start();
-        second.start();
-        third.start();
         first.join();
+        second.start();
         second.join();
+        third.start();
         third.join();
         assertNull(userStorage.findById(2));
     }
