@@ -18,7 +18,6 @@ public class Wget implements Runnable {
 
     @Override
     public void run() {
-        long delay = 0;
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
             byte[] dataBuffer = new byte[1024];
@@ -31,10 +30,8 @@ public class Wget implements Runnable {
                     Long finish = System.currentTimeMillis() / 1000;
                     Long rslTime = finish - start;
                     if ((rslTime) < speed) {
-                        delay += 2000;
-                        start = System.currentTimeMillis() / 1000;
+                        Thread.sleep(speed - rslTime);
                     }
-                    Thread.sleep(delay);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     e.printStackTrace();
@@ -47,16 +44,12 @@ public class Wget implements Runnable {
 
     public static void main(String[] args) throws InterruptedException {
         Long start1 = System.currentTimeMillis() / 1000;
-        String url;
-        int speed;
-        String fileName;
-        try {
-            url = args[0];
-            speed = Integer.parseInt(args[1]);
-            fileName = args[2];
-        } catch (IllegalArgumentException e) {
+        if (args.length < 3) {
             throw new IllegalArgumentException("некорректные данные");
         }
+        String url = args[0];
+        int speed = Integer.parseInt(args[1]);
+        String fileName = args[2];
         Thread wget = new Thread(new Wget(url, speed, fileName));
         wget.start();
         wget.join();
