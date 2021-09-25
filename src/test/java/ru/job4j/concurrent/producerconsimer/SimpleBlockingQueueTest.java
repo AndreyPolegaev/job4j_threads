@@ -17,8 +17,15 @@ public class SimpleBlockingQueueTest {
                 e.printStackTrace();
             }
         });
-        Thread consumer = new Thread(sbq::poll);
+        Thread consumer = new Thread(() -> {
+            try {
+                sbq.poll();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         producer.start();
+        producer.join();
         consumer.start();
         producer.join();
         consumer.join();
