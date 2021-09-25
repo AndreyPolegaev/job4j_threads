@@ -1,6 +1,7 @@
 package ru.job4j.concurrent.conchashmap;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Cache {
@@ -11,15 +12,14 @@ public class Cache {
     }
 
     public boolean update(Base model) {
-        memory.computeIfPresent(model.getId(), (k, v) -> {
-            if (v.getVersion() != model.getVersion()) {
-                throw new OptimisticException("Разные версии");
+        return Objects.nonNull(memory.computeIfPresent(model.getId(), (key, oldValue) -> {
+            if (oldValue.getVersion() != model.getVersion()) {
+                throw new OptimisticException("Разные версии Base");
             }
-            v.setVersion();
-            v.setName(model.getName());
-            return v;
-        });
-        return memory.containsKey(model.getId());
+            oldValue.setVersion(oldValue.getVersion() + 1);
+            oldValue.setName(model.getName());
+            return oldValue;
+        }));
     }
 
     public void delete(Base model) {
