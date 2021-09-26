@@ -42,11 +42,15 @@ public class SimpleBlockingQueue<T> extends Thread {
     }
 
     public int getSize() {
-        return queue.size();
+        synchronized (this) {
+            return queue.size();
+        }
     }
 
     public boolean isEmpty() {
-        return queue.isEmpty();
+        synchronized (this) {
+            return queue.isEmpty();
+        }
     }
 }
 
