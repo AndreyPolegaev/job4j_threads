@@ -20,7 +20,7 @@ public class SimpleBlockingQueue<T> extends Thread {
     public void offer(T value) throws InterruptedException {
         synchronized (this) {
             while (queue.size() == limit) {
-                    System.out.println(Thread.currentThread().getName() + " ждет");
+                    System.out.println(Thread.currentThread().getName() + " ждет в методе offer()");
                     this.wait();
             }
             queue.offer(value);
@@ -32,9 +32,11 @@ public class SimpleBlockingQueue<T> extends Thread {
     public T poll() throws InterruptedException {
         synchronized (this) {
             while (queue.isEmpty()) {
+                System.out.println(Thread.currentThread().getName() + " ждет в методе poll()");
                     this.wait();
             }
             System.out.println("элемент снят, размер очереди = " + queue.size());
+            this.notifyAll();
             return queue.poll();
         }
     }
