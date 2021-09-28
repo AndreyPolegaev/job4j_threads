@@ -12,27 +12,31 @@ import java.util.concurrent.RecursiveTask;
 public class ParallelFind extends RecursiveTask<Integer> {
 
     private final int[] array;
+    private final int from;
+    private final int to;
     private final int el;
 
-    public ParallelFind(int[] array, int el) {
+    public ParallelFind(int[] array, int from, int to, int el) {
         this.array = array;
+        this.from = from;
+        this.to = to;
         this.el = el;
     }
 
     @Override
     protected Integer compute() {
-        if (array.length <= 10) {
+        if (to - from <= 10) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == el) {
                     return i;
                 }
             }
+            return -1;
         }
-
+        int mid = (from + to) / 2;
         // создаем задачи для поиска
-        ParallelFind leftFind = new ParallelFind(Arrays.copyOfRange(array, 0, array.length / 2), el);
-        ParallelFind rightFind = new ParallelFind(Arrays.copyOfRange(array, array.length + 1, array.length), el);
-
+        ParallelFind leftFind = new ParallelFind(array, from, mid, el);
+        ParallelFind rightFind = new ParallelFind(array, mid + 1, to, el);
         leftFind.fork();
         rightFind.fork();
         // объединяем полученные результаты
@@ -43,6 +47,7 @@ public class ParallelFind extends RecursiveTask<Integer> {
 
     public static void main(String[] args) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
-        System.out.println(forkJoinPool.invoke(new ParallelFind(new int[]{1, 2, 3, -1, 0}, -1)));
+        int[] data = new int[]{1, 2, 3, -1, 0};
+        System.out.println(forkJoinPool.invoke(new ParallelFind(data, 0, data.length, 3)));
     }
 }
