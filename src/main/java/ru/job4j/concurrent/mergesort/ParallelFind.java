@@ -40,9 +40,9 @@ public class ParallelFind extends RecursiveTask<Integer> {
         leftFind.fork();
         rightFind.fork();
         // объединяем полученные результаты
-        leftFind.join();
-        rightFind.join();
-        return el;
+        int e1 = leftFind.join();
+        int e2 = rightFind.join();
+        return Math.max(e1, e2);
     }
 
     public static void main(String[] args) {
