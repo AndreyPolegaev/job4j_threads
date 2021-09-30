@@ -26,7 +26,7 @@ public class ParallelFind extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         if (to - from <= 10) {
-            for (int i = 0; i < array.length; i++) {
+            for (int i = from; i < to; i++) {
                 if (array[i] == el) {
                     return i;
                 }
