@@ -1,9 +1,7 @@
 package ru.job4j.concurrent.future;
 
 import org.junit.Test;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Stream;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.is;
 
@@ -17,9 +15,12 @@ public class RolColSumTest {
                 {7, 8, 9}
         };
         RolColSum.Sums[] data = RolColSum.sum(array);
-        int[] rsl = Arrays.stream(data).flatMapToInt(el -> Stream.of(el.getRowSum(), el.getColSum()).mapToInt(x -> x)).toArray();
-        int[] expected = new int[]{6, 12, 15, 15, 24, 18};
-        assertArrayEquals(rsl, expected);
+        assertThat(data[0].getRowSum(), is(6));
+        assertThat(data[0].getColSum(), is(12));
+        assertThat(data[1].getRowSum(), is(15));
+        assertThat(data[1].getColSum(), is(15));
+        assertThat(data[2].getRowSum(), is(24));
+        assertThat(data[2].getColSum(), is(18));
     }
 
     @Test
@@ -30,9 +31,12 @@ public class RolColSumTest {
                 {7, 8, 9}
         };
         RolColSum.Sums[] data = RolColSum.asyncSum(array);
-        int[] rsl = Arrays.stream(data).flatMapToInt(el -> Stream.of(el.getRowSum(), el.getColSum()).mapToInt(x -> x)).toArray();
-        int[] expected = new int[]{6, 12, 15, 15, 24, 18};
-        assertArrayEquals(rsl, expected);
+        assertThat(data[0].getRowSum(), is(6));
+        assertThat(data[0].getColSum(), is(12));
+        assertThat(data[1].getRowSum(), is(15));
+        assertThat(data[1].getColSum(), is(15));
+        assertThat(data[2].getRowSum(), is(24));
+        assertThat(data[2].getColSum(), is(18));
     }
 
     @Test
