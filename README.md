@@ -4,3 +4,5 @@
 [![codecov](https://codecov.io/gh/AndreyPolegaev/job4j_threads/branch/master/graph/badge.svg?token=KJQPARQP66)](https://codecov.io/gh/AndreyPolegaev/job4j_threads)
 
 "В курсе производилась работа с веткамы git."
+
+изменения

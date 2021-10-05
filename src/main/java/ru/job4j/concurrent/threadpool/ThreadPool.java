@@ -29,7 +29,6 @@ public class ThreadPool {
     public ThreadPool() {
         for (int i = 0; i < size; i++) {
             threads.add(new Thread(() -> {
-
                 while (!tasks.isEmpty() || !Thread.currentThread().isInterrupted()) {
                     try {
                         Runnable task = tasks.poll();
@@ -56,8 +55,7 @@ public class ThreadPool {
     }
 
     /**
-     * В каждую нить передается блокирующая очередь tasks.
-     * В методе run мы должны получить задачу из очереди tasks.
+     * прерывание потоков
      */
     public void shutdown() {
         threads.forEach(el -> {
@@ -73,7 +71,7 @@ public class ThreadPool {
 
     public static void main(String[] args) {
         ThreadPool threadPool = new ThreadPool();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 30; i++) {
             threadPool.work(new Runnable() {
                 @Override
                 public void run() {
