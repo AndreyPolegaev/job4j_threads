@@ -26,7 +26,7 @@ public class ParallelFind extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         if (to - from <= 10) {
-            for (int i = from; i <= array.length - 1; i++) {
+            for (int i = from; i <= to; i++) {
                 if (array[i] == el) {
                     return i;
                 }
@@ -48,6 +48,6 @@ public class ParallelFind extends RecursiveTask<Integer> {
     public static void main(String[] args) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         int[] data = new int[]{1, 2, 3, -1, 0};
-        System.out.println(forkJoinPool.invoke(new ParallelFind(data, 0, data.length, 3)));
+        System.out.println(forkJoinPool.invoke(new ParallelFind(data, 0, data.length - 1, 3)));
     }
 }
