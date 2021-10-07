@@ -1,7 +1,6 @@
 package ru.job4j.concurrent.producerconsimer;
 
 import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 import static org.hamcrest.Matchers.is;

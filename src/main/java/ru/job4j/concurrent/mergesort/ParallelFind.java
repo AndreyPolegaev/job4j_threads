@@ -1,6 +1,5 @@
 package ru.job4j.concurrent.mergesort;
 
-import java.util.Arrays;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
@@ -34,12 +33,16 @@ public class ParallelFind extends RecursiveTask<Integer> {
             return -1;
         }
         int mid = (from + to) / 2;
-        // создаем задачи для поиска
+        /**
+         * создаем задачи для поиска
+         */
         ParallelFind leftFind = new ParallelFind(array, from, mid, el);
         ParallelFind rightFind = new ParallelFind(array, mid + 1, to, el);
         leftFind.fork();
         rightFind.fork();
-        // объединяем полученные результаты
+        /**
+         * объединяем полученные результаты
+         */
         int e1 = leftFind.join();
         int e2 = rightFind.join();
         return Math.max(e1, e2);

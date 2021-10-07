@@ -103,34 +103,34 @@ public class RolColSum {
 
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-//        /**
-//         * тест последовательное выполение
-//         * (разница по скорости ~ 2 - 3 раза)
-//         */
-//        int[][] array = {
-//                {1, 2, 3},
-//                {4, 5, 6},
-//                {7, 8, 9}
-//        };
-//        long start = System.currentTimeMillis();
-//        Sums[] data = RolColSum.sum(array);
-//        for (Sums temp : data) {
-//            System.out.println(String.format("Сумма по строке %s, Сумма по столбцу %s", temp.getRowSum(), temp.getColSum()));
-//        }
-//        System.out.println(String.format("<Время выполнения последовательно:  %d >", System.currentTimeMillis() - start));
-//        System.out.println("-".repeat(40));
-//
-//        /**
-//         * тест асинхронное выполнение
-//         */
-//        long start2 = System.currentTimeMillis();
-//        Sums[] async = RolColSum.asyncSum(array);
-//        for (Sums temp : async) {
-//            System.out.println(String.format("Сумма по строке %s, Сумма по столбцу %s", temp.getRowSum(), temp.getColSum()));
-//        }
-//        System.out.println(String.format("<Время выполнения асинхронно: %d >", System.currentTimeMillis() - start2));
-//
-//        System.out.println(System.lineSeparator().repeat(2));
+        /**
+         * тест последовательное выполение
+         * (разница по скорости ~ 2 - 3 раза)
+         */
+        int[][] array = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+        long start = System.currentTimeMillis();
+        Sums[] data = RolColSum.sum(array);
+        for (Sums temp : data) {
+            System.out.println(String.format("Сумма по строке %s, Сумма по столбцу %s", temp.getRowSum(), temp.getColSum()));
+        }
+        System.out.println(String.format("<Время выполнения последовательно:  %d >", System.currentTimeMillis() - start));
+        System.out.println("-".repeat(40));
+
+        /**
+         * тест асинхронное выполнение
+         */
+        long start2 = System.currentTimeMillis();
+        Sums[] async = RolColSum.asyncSum(array);
+        for (Sums temp : async) {
+            System.out.println(String.format("Сумма по строке %s, Сумма по столбцу %s", temp.getRowSum(), temp.getColSum()));
+        }
+        System.out.println(String.format("<Время выполнения асинхронно: %d >", System.currentTimeMillis() - start2));
+
+        System.out.println(System.lineSeparator().repeat(2));
 
 
         /**
@@ -161,6 +161,5 @@ public class RolColSum {
             System.out.println(String.format("Сумма по строке %s, Сумма по столбцу %s", temp.getRowSum(), temp.getColSum()));
         }
         System.out.println(String.format("<Время выполнения асинхронно: %d >", System.currentTimeMillis() - s2));
-
     }
 }

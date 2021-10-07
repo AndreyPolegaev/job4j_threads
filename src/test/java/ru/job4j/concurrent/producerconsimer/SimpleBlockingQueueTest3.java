@@ -1,7 +1,6 @@
 package ru.job4j.concurrent.producerconsimer;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 public class SimpleBlockingQueueTest3 {
@@ -36,22 +35,15 @@ public class SimpleBlockingQueueTest3 {
                     Thread.currentThread().interrupt();
                 }
             });
-
-
         }
 
         for (var temp : threads) {
             temp.start();
-          //  temp.join();
-
         }
         for (var temp : threadConsumer) {
             temp.start();
             temp.interrupt();
             temp.join();
-
         }
-
     }
-
 }

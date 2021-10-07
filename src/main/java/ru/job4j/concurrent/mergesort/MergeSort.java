@@ -9,24 +9,37 @@ public class MergeSort {
     }
 
     private static int[] sort(int[] array, int from, int to) {
-        // при следующем условии, массив из одного элемента
-        // делить нечего, возвращаем элемент
+
+        /**
+         * при следующем условии, массив из одного элемента
+         * делить нечего, возвращаем элемент
+         */
         if (from == to) {
-            return new int[] {array[from]};
+            return new int[]{array[from]};
         }
-        // попали сюда, значит в массиве более одного элемента
-        // находим середину
+        /**
+         * попали сюда, значит в массиве более одного элемента
+         * находим середину
+         */
         int mid = (from + to) / 2;
-        // объединяем отсортированные части
+        /**
+         * объединяем отсортированные части
+         */
         return merge(
-                // сортируем левую часть
+                /**
+                 *  сортируем левую часть
+                 */
                 sort(array, from, mid),
-                // сортируем правую часть
+                /**
+                 *  сортируем правую часть
+                 */
                 sort(array, mid + 1, to)
         );
     }
 
-    // Метод объединения двух отсортированных массивов
+    /**
+     * Метод объединения двух отсортированных массивов
+     */
     public static int[] merge(int[] left, int[] right) {
         int li = 0;
         int ri = 0;
@@ -49,6 +62,5 @@ public class MergeSort {
     public static void main(String[] args) {
         int[] data = new int[]{5, 1, 0, -3, 7, -2, 10};
         System.out.println(Arrays.toString(MergeSort.sort(data)));
-
     }
 }

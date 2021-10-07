@@ -13,11 +13,17 @@ public class Test {
         Map<Integer, CompletableFuture<Integer>> futures = new HashMap<>();
 
 
-        // считаем сумму по главной диагонали
+        /**
+         * считаем сумму по главной диагонали
+         */
+
         futures.put(0, getTask(matrix, 0, n - 1, n - 1));
-        // считаем суммы по побочным диагоналям
+
+        /**
+         * считаем суммы по побочным диагоналям
+         */
         for (int k = 1; k <= n; k++) {
-            futures.put(k, getTask(matrix, 0, k - 1,  k - 1));
+            futures.put(k, getTask(matrix, 0, k - 1, k - 1));
             if (k < n) {
                 futures.put(2 * n - k, getTask(matrix, n - k, n - 1, n - 1));
             }

@@ -6,7 +6,7 @@ public final class DCLSingleton {
 
     public static DCLSingleton instOf() {
         if (inst == null) {
-            synchronized (DCLSingleton.class) {   // -> synhronized БЛОК
+            synchronized (DCLSingleton.class) {
                 if (inst == null) {
                     inst = new DCLSingleton();
                 }
